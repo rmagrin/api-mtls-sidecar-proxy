@@ -45,7 +45,7 @@ Response:
 And then run a `curl` **with** a valid client certificate to see the `https://httpbin.org/get` result proxied through the sidecar mTLS:
 
 ```bash
-curl --cacert example/sidecar/server-certs/server-ca.pem --key example/client/certs/client-key.pem --cert example/client/certs/client.pem -k https://localhost
+curl --cacert example/sidecar/server-certs/server-ca.pem --key example/client/certs/client-key.pem --cert example/client/certs/client.pem https://localhost
 ```
 
 Response:
@@ -62,6 +62,32 @@ Response:
   "origin": "<your-ip>",
   "url": "https://httpbin.org/get"
 }
+```
+
+## Other test scenarios
+
+### Fails to validate server certificate due to unknow CA
+
+```bash
+curl --key example/client/certs/client-key.pem --cert example/client/certs/client.pem https://localhost
+```
+
+### Fails to validate server certificatedue to invalid hostname
+
+```bash
+curl --cacert example/sidecar/server-certs/server-ca.pem --key example/client/certs/client-key.pem --cert example/client/certs/client.pem https://127.0.0.1
+```
+
+### Fails to validate client certificate due to missing certificates
+
+```bash
+curl --cacert example/sidecar/server-certs/server-ca.pem https://localhost
+```
+
+### Fails to validate client certificate due to invalid client certificates
+
+```bash
+curl --cacert example/sidecar/server-certs/server-ca.pem --key example/sidecar/server-certs/server-key.pem --cert example/sidecar/server-certs/server.pem https://localhost
 ```
 
 ## Expired certificates
