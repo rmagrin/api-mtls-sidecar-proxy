@@ -64,6 +64,10 @@ Response:
 }
 ```
 
+## Expired certificates
+
+In case the certificates in this repository expire you can run the command `./generate-certs.sh` to generate new certificates
+
 ## The whole pattern
 
 The full pattern implemented here is the sidecar-proxy and ambassador-gateway. You can [check here](https://github.com/bancodobrasil/api-mtls-ambassador-gateway) the ambassador-gateway part.
