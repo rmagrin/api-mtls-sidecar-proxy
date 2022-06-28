@@ -14,7 +14,7 @@ services:
     image: labbsr0x/api-mtls-sidecar-proxy:0.0.1
     environment:
       - ALLOWED_CERTIFICATE_FINGERPRINT=all
-      - PROXY_PASS=https://mtls-bff.free.beeceptor.com/
+      - PROXY_PASS=https://httpbin.org/get
     volumes:
       - ./certs:/etc/nginx/conf.d/certs
     ports:
@@ -42,7 +42,7 @@ Response:
 
 ```
 
-And then run a `curl` **with** a valid client certificate to see the `https://mtls-bff.free.beeceptor.com` result proxied through the sidecar mTLS:
+And then run a `curl` **with** a valid client certificate to see the `https://httpbin.org/get` result proxied through the sidecar mTLS:
 
 ```bash
 curl --cacert example/sidecar/server-certs/server-ca.pem --key example/client/certs/client-key.pem --cert example/client/certs/client.pem -k https://localhost
@@ -51,7 +51,17 @@ curl --cacert example/sidecar/server-certs/server-ca.pem --key example/client/ce
 Response:
 
 ```bash
-[{"title":"Clean kitchen","description":"Don't forget the are under the sink!!"},{"title":"Call Eric","description":"Remind him to do his taxes"},{"title":"Water flowers","description":"Don't forget the ones in the garden!"}]
+{
+  "args": {},
+  "headers": {
+    "Accept": "*/*",
+    "Host": "httpbin.org",
+    "User-Agent": "curl/7.79.1",
+    "X-Amzn-Trace-Id": "<some-trace-id>"
+  },
+  "origin": "<your-ip>",
+  "url": "https://httpbin.org/get"
+}
 ```
 
 ## The whole pattern
